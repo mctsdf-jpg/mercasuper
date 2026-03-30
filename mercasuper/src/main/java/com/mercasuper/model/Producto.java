@@ -5,11 +5,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-/**
- * Clase Producto
- * Representa un producto de Mercasuper
- */
-@Entity
+//productos de Mercasuper, intentto 15 qwq
+
+@Entity //Con esto, hago que hibernate debe crear la tabla correspondiente
 public class Producto {
 
     @Id
@@ -19,12 +17,12 @@ public class Producto {
     private String nombre;
     private double precio;
     private String descripcion;
-    private String imagen; // nombre de archivo en /static/img
+    private String imagen; // "Acordarme" Poner en opción imagen el nombre de la imagen para que salga.
 
-    // Constructor vacío
+    // ejemplo constructor
     public Producto() {}
 
-    // Constructor completo
+    // producros de mercasuper para constructor de bd
     public Producto(String nombre, double precio, String descripcion, String imagen) {
         this.nombre = nombre;
         this.precio = precio;

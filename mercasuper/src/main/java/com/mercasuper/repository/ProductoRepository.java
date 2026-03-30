@@ -5,8 +5,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
- * Repositorio Producto
- * Permite realizar operaciones CRUD sobre productos
+ * Interfaz para operaciones de base de datos sobre la entidad Producto.
+ * Gracias a JpaRepository, tenemos métodos como findAll(), save() y deleteById().
  */
 @Repository
-public interface ProductoRepository extends JpaRepository<Producto, Long> {}
+public interface ProductoRepository extends JpaRepository<Producto, Long> {
+    // Aquí podrías añadir consultas personalizadas en el futuro
+}
