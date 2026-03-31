@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>MercaSuper - Tienda</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        .tienda-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px; padding: 20px;
+        }
+        .card {
+            border: 1px solid #ddd; border-radius: 10px;
+            padding: 15px; text-align: center; background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .card img { width: 100%; height: 150px; object-fit: contain; }
+        .precio { color: #28a745; font-weight: bold; font-size: 1.4em; }
+        .descripcion { color: #666; font-size: 0.9em; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <header style="background: #a03333; color: white; padding: 15px; display: flex; justify-content: space-between;">
+        <h1>MercaSuper - Tienda</h1>
+        <a th:href="@{/logout}" style="color: white; text-decoration: none; font-weight: bold;">Cerrar Sesión</a>
+    </header>
+
+    <div class="tienda-container">
+        <div class="card" th:each="p : ${productos}">
+            
+            <img th:src="@{'/img/' + ${p.imagen}}" alt="Imagen del producto">
+            
+            <h3 th:text="${p.nombre}">Nombre del Producto</h3>
+            
+            <p class="descripcion" th:text="${p.descripcion}">Descripción aquí</p>
+            
+            <p class="precio" th:text="'$' + ${p.precio}">$0.00</p>
+            
+            <button style="background: #a03333; color: white; border: none; padding: 10px; width: 100%; border-radius: 5px; cursor: pointer;">
+                Comprar ahora
+            </button>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>MercaSuper - Registro</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container">
+        <div class="info">
+            <p class="txt-1">Únete a nosotros</p>
+            <h2>MercaSuper</h2>
+            <p class="txt-2">Crea tu cuenta para empezar a gestionar el inventario.</p>
+        </div>
+
+        <form class="form" th:action="@{/registrar}" method="post">
+            <h2>Crear Cuenta</h2>
+            <img th:src="@{/img/logo.png}" alt="Logo" height="80">
+            
+            <input type="text" name="nombre" placeholder="Nombre completo" required>
+            <input type="email" name="correo" placeholder="Correo electrónico" required>
+            <input type="password" name="password" placeholder="Contraseña segura" required>
+            
+            <input type="submit" value="Registrarse" class="submit">
+            <p><a th:href="@{/}">¿Ya tienes cuenta? Inicia sesión</a></p>
+        </form>
+    </div>
+</body>
+</html>

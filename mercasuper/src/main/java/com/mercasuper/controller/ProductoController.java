@@ -49,7 +49,7 @@ public class ProductoController {
     return "form-producto"; 
 }
 
-    // Guardar el producto en MySQL
+    //Guardar el producto en MySQL
     @PostMapping("/productos/guardar")
     public String guardar(@ModelAttribute("producto") Producto producto) {
         productoRepository.save(producto); // Spring Data JPA guarda el producto en la tabla

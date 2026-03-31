@@ -1,24 +1,52 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Productos Mercasuper</title>
-    <link rel="stylesheet" th:href="@{/css/stylee.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio de sesión - MercaSuper</title>
+    <link rel="icon" th:href="@{/img/logo.png}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-<h1>Lista de Productos</h1>
 
-<!-- Listado de productos -->
-<div>
-    <ul>
-        <li th:each="producto : ${productos}">
-            <strong th:text="${producto.nombre}">Nombre</strong> - 
-            $<span th:text="${producto.precio}">0.0</span><br>
-            <span th:text="${producto.descripcion}">Descripción</span><br>
-            <img th:src="@{/img/{img}(img=${producto.imagen})}" alt="Producto" width="100">
-        </li>
-    </ul>
-</div>
+    <div class="container">
+
+        <div class="info">
+            <p class="txt-1">Gracias por visitarnos</p>
+            <h2>Bienvenidos a MercaSuper</h2>
+        </div>
+
+        <form class="form" th:action="@{/login}" method="POST">
+            <h2>Inicio de sesión</h2>
+            <img th:src="@{/img/logo.png}" alt="Logo" height="80">
+            <p>Entra y disfruta de nuestra gran variedad de productos</p>
+
+            <div class="mensajes" style="width: 100%; text-align: center;">
+                
+                <p th:if="${param.error}" 
+                   style="color: #a03333; background: #f8d7da; padding: 8px; border-radius: 5px; font-size: 14px; border: 1px solid #f5c6cb;">
+                    Correo o contraseña incorrectos.
+                </p>
+
+                <p th:if="${param.registrado}" 
+                   style="color: #155724; background: #d4edda; padding: 8px; border-radius: 5px; font-size: 14px; border: 1px solid #c3e6cb;">
+                    ¡Cuenta creada! Ya puedes iniciar sesión.
+                </p>
+
+                <p th:if="${error}" th:text="${error}" 
+                   style="color: #a03333; font-weight: bold; margin-top: 10px;">
+                </p>
+            </div>
+
+            <input id="correo" type="email" name="email" placeholder="Correo" required>
+            <input id="password" type="password" name="password" placeholder="Contraseña" required>
+            
+            <input type="submit" value="Login">
+
+            <p><a th:href="@{/registro}">Crear cuenta</a></p>
+        </form>
+
+    </div>
 
 </body>
 </html>
