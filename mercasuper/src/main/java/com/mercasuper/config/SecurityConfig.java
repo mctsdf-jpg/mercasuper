@@ -36,11 +36,22 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/registro", "/registrar", "/css/**", "/img/**").permitAll()
-                .requestMatchers("/productos/**").hasRole("ADMIN")
-                .requestMatchers("/tienda/**").hasAnyRole("ADMIN", "USER")
-                .anyRequest().authenticated()
-            )
+    // 1. Recursos estáticos primero
+        .requestMatchers("/", "/registro", "/registrar", "/css/**", "/js/**", "/img/**").permitAll()
+    
+    // 2. Rutas de Gestión (SOLO ADMIN) - Aseguramos que sean prioritarias
+        .requestMatchers("/productos/nuevo/**").hasRole("ADMIN")
+        .requestMatchers("/productos/editar/**").hasRole("ADMIN")
+        .requestMatchers("/productos/eliminar/**").hasRole("ADMIN")
+        .requestMatchers("/productos/**").hasRole("ADMIN")
+        .requestMatchers("/productos/guardar").hasRole("ADMIN")
+    
+    // 3. Rutas de Cliente y API (Ambos roles)
+        .requestMatchers("/ventas/**", "/api/productos/**", "/tienda/**").hasAnyRole("ADMIN", "USER")
+    
+    // 4. Todo lo demás requiere estar logueado
+        .anyRequest().authenticated()
+)
             .formLogin(login -> login
                 .loginPage("/")
                 .loginProcessingUrl("/login")

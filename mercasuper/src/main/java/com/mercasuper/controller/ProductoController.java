@@ -48,7 +48,12 @@ public class ProductoController {
     model.addAttribute("producto", producto);
     return "form-producto"; 
 }
-
+// Nuevo método para que React pueda obtener los productos de MySQL
+    @GetMapping("/api/productos")
+    @org.springframework.web.bind.annotation.ResponseBody
+    public List<Producto> obtenerProductosAPI() {
+        return productoRepository.findAll();
+}
     //Guardar el producto en MySQL
     @PostMapping("/productos/guardar")
     public String guardar(@ModelAttribute("producto") Producto producto) {

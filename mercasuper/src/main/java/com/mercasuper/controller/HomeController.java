@@ -75,12 +75,15 @@ public class HomeController {
             return "redirect:/tienda";
         }
     }
-
+        @GetMapping("/ventas")
+        public String verVentas() {
+            return "carrito-react"; // Esto buscará el archivo carrito-react.html
+    }
     //Muestra la página de tienda a clientes con los productos de la DB
-    @GetMapping("/tienda")
-    public String mostrarTienda(Model model) {
+        @GetMapping("/tienda")
+        public String mostrarTienda(Model model) {
         //Buscamos todos los productos en MySQL y los enviamos al HTML con el nombre "productos"
-        model.addAttribute("productos", productoRepository.findAll());
-        return "tienda"; 
+            model.addAttribute("productos", productoRepository.findAll());
+            return "tienda"; 
     }
 }

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mercasuper Pro - Ventas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        body { background-color: #f4f7f6; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .logo-img { height: 60px; object-fit: contain; }
+        .card-producto { border: none; border-radius: 12px; transition: transform 0.2s; }
+        .card-producto:hover { transform: scale(1.02); box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+    /*<![CDATA[*/
+        const { useState, useEffect } = React;
+
+        //Para seleccionar la cantidad de productos a comprar
+        const QuantitySelector = ({ cantidad, setCantidad }) => (
+            <div className="d-flex align-items-center justify-content-center gap-2 mb-3">
+                <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => setCantidad(Math.max(1, cantidad - 1))}>-</button>
+                <span className="fw-bold px-2">{cantidad}</span>
+                <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => setCantidad(cantidad + 1)}>+</button>
+            </div>
+        );
+
+        //renderizar la información, como lo son la imagen, el nombre y precio
+        const ProductCard = ({ producto, alAgregar }) => {
+            const [cantidad, setCantidad] = useState(1);
+            return (
+                <div className="col-md-4 mb-4">
+                    <div className="card h-100 card-producto p-3 text-center shadow-sm">
+                        <img src={`/img/${producto.imagen}`} className="card-img-top mx-auto" style={{height: '100px', objectFit: 'contain'}} alt={producto.nombre} />
+                        <div className="card-body">
+                            <h6 className="fw-bold">{producto.nombre}</h6>
+                            <p className="text-primary fw-bold">${producto.precio.toLocaleString()}</p>
+                            <QuantitySelector cantidad={cantidad} setCantidad={setCantidad} />
+                            <button className="btn btn-primary btn-sm w-100 rounded-pill" onClick={() => alAgregar(producto, cantidad)}>
+                                Agregar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        //Permite realizar el filtro o bisqueda de los productos
+        const InventoryFilter = ({ busqueda, setBusqueda }) => (
+            <input 
+                type="text" 
+                className="form-control mb-4 rounded-pill shadow-sm px-4 py-2" 
+                placeholder="🔍 Buscar productos..." 
+                value={busqueda}
+                onChange={(e) => setBusqueda(e.target.value)} 
+            />
+        );
+
+        //Listar los productos seleccionados implementando / .map para el  arreglo de objetos del carrito para mostrar nombre y subtotal por item.
+        const ShoppingCart = ({ carrito }) => (
+            <div className="mb-3" style={{maxHeight: '300px', overflowY: 'auto'}}>
+                {carrito.length === 0 ? (
+                    <p className="text-muted text-center my-4 small">El carrito está vacío</p>
+                ) : (
+                    carrito.map(item => (
+                        <div key={item.id} className="d-flex justify-content-between mb-2 border-bottom pb-2">
+                            <div className="small">
+                                <strong>{item.nombre}</strong> <br/>
+                                <span className="text-muted">{item.cant} x ${item.precio.toLocaleString()}</span>
+                            </div>
+                            <span className="fw-bold">${(item.precio * item.cant).toLocaleString()}</span>
+                        </div>
+                    ))
+                )}
+            </div>
+        );
+
+        //multiplicar precio por cantidad y sumar el IVA
+        const TotalCalculator = ({ totalSinIva }) => {
+            const iva = totalSinIva * 0.19;
+            return (
+                <div className="bg-light p-3 rounded">
+                    <div className="d-flex justify-content-between small text-muted"><span>Subtotal:</span><span>${totalSinIva.toLocaleString()}</span></div>
+                    <div className="d-flex justify-content-between small text-muted"><span>IVA (19%):</span><span>${iva.toLocaleString()}</span></div>
+                    <hr/>
+                    <div className="d-flex justify-content-between fw-bold fs-5 text-success"><span>Total:</span><span>${(totalSinIva + iva).toLocaleString()}</span></div>
+                </div>
+            );
+        };
+
+        //Aplicación y funcion de la pagina
+        function App() {
+            const [productos, setProductos] = useState([]);
+            const [busqueda, setBusqueda] = useState("");
+            const [carrito, setCarrito] = useState([]);
+            //traer por medio de api la bd de productos
+            useEffect(() => {
+                fetch('/api/productos')
+                    .then(res => res.json())
+                    .then(data => setProductos(data))
+                    .catch(err => console.error("Error cargando API:", err));
+            }, []);
+
+            const agregarAlCarrito = (p, cant) => {
+                const existe = carrito.find(x => x.id === p.id);
+                if (existe) {
+                    setCarrito(carrito.map(x => x.id === p.id ? { ...x, cant: x.cant + cant } : x));
+                } else {
+                    setCarrito([...carrito, { ...p, cant: cant }]);
+                }
+            };
+
+            const totalSinIva = carrito.reduce((acc, item) => acc + (item.precio * item.cant), 0);
+            const productosFiltrados = productos.filter(p => p.nombre.toLowerCase().includes(busqueda.toLowerCase()));
+
+            return (
+                <div className="container py-5">
+                    <div className="d-flex justify-content-between align-items-center mb-5 border-bottom pb-3">
+                        <h1 className="fw-bold m-0 text-dark">Mercasuper Pro</h1>
+                        <img src="/img/logo.png" className="logo-img" alt="Logo" />
+                    </div>
+
+                    <div className="row">
+                        <div className="col-md-8">
+                            <InventoryFilter busqueda={busqueda} setBusqueda={setBusqueda} />
+                            <div className="row">
+                                {productosFiltrados.map(p => (
+                                    <ProductCard key={p.id} producto={p} alAgregar={agregarAlCarrito} />
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="col-md-4">
+                            <div className="card shadow border-0 p-4" style={{borderRadius: '15px'}}>
+                                <h4 className="fw-bold mb-4">Tu Pedido</h4>
+                                <ShoppingCart carrito={carrito} />
+                                <TotalCalculator totalSinIva={totalSinIva} />
+                                <button className="btn btn-warning w-100 mt-4 py-2 fw-bold border-0" disabled={carrito.length === 0} onClick={() => alert('¡Compra registrada!')}>
+                                    FINALIZAR COMPRA
+                                </button>
+                                <a href="/tienda" className="btn btn-link w-100 mt-2 text-decoration-none text-muted small">Volver al inicio</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    /*]]>*/
+    </script>
+</body>
+</html>
