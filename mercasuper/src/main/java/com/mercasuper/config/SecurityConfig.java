@@ -16,7 +16,8 @@ public class SecurityConfig {
 
     @Autowired
     private UserDetailsServiceImpl userDetailsService; // Inyectamos tu servicio de base de datos
-
+    
+    //Con esto hago que la contraseña quede encriptada y no pueda ser vista en la BD por seguridad
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -36,7 +37,7 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-    // 1. Recursos estáticos primero
+    //Recursos estáticos primero
         .requestMatchers("/", "/registro", "/registrar", "/css/**", "/js/**", "/img/**").permitAll()
     
     // 2. Rutas de Gestión (SOLO ADMIN) - Aseguramos que sean prioritarias
@@ -46,12 +47,13 @@ public class SecurityConfig {
         .requestMatchers("/productos/**").hasRole("ADMIN")
         .requestMatchers("/productos/guardar").hasRole("ADMIN")
     
-    // 3. Rutas de Cliente y API (Ambos roles)
+    //Rutas de Cliente y API (Ambos roles)
         .requestMatchers("/ventas/**", "/api/productos/**", "/tienda/**").hasAnyRole("ADMIN", "USER")
     
-    // 4. Todo lo demás requiere estar logueado
+    //Todo lo demás requiere estar logueado
         .anyRequest().authenticated()
 )
+            //Aqui el Spring Security realiza la autenticación de manera automatica
             .formLogin(login -> login
                 .loginPage("/")
                 .loginProcessingUrl("/login")

@@ -36,7 +36,7 @@ public class HomeController {
         return "registro";
     }
 
-    //Procesador de datos
+    //Procesador de datos para el almacenamiento de nuevos usuarios 
     @PostMapping("/registrar")
     public String registrarUsuario(@ModelAttribute("usuario") Usuario usuario) {
         try {
@@ -44,7 +44,7 @@ public class HomeController {
             String passwordEncriptada = passwordEncoder.encode(usuario.getPassword());
             usuario.setPassword(passwordEncriptada);
 
-            //usuario normal a todos los registrados
+            //Aqui le pongo el rol de usuarios a todos los que se registren 
             usuario.setRol("ROLE_USER");
 
             //guardar en MySQL
