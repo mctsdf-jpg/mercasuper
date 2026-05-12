@@ -5,47 +5,181 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio de sesión - MercaSuper</title>
     <link rel="icon" th:href="@{/img/logo.png}">
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #e0df88;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            height: 600px; /* Reducido un poco para que no se corte en laptops */
+            width: 900px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .info {
+            /* He añadido un degradado oscuro para que el texto amarillo resalte */
+            background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('/img/granos.webp'); 
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            padding: 40px;
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .txt-1 {
+            color: #ffe600;
+            text-transform: uppercase;
+            font-size: 18px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .info h2 {
+            color: #fff;
+            text-transform: uppercase;
+            font-size: 40px;
+            line-height: 1.1;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
+        }
+
+        .form {
+            padding: 40px;
+            width: 50%;
+            text-align: center;
+            background-color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form h2 {
+            color: #b32d2d;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .form img {
+            margin-bottom: 20px;
+            object-fit: contain;
+        }
+
+        .form p {
+            font-size: 15px;
+            color: #666;
+            margin-bottom: 20px;
+            max-width: 80%;
+        }
+
+        .mensajes {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .form input[type="email"],
+        .form input[type="password"] {
+            width: 85%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 15px;
+            transition: border 0.3s;
+        }
+
+        .form input[type="email"]:focus,
+        .form input[type="password"]:focus {
+            border: 1px solid #b32d2d;
+            outline: none;
+        }
+
+        .form input[type="submit"] {
+            width: 60%;
+            padding: 12px;
+            background-color: #b32d2d;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: transform 0.2s, background 0.3s;
+        }
+
+        .form input[type="submit"]:hover {
+            background-color: #8b2323;
+            transform: scale(1.02);
+        }
+
+        .form a {
+            color: #b32d2d;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .form a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
 
     <div class="container">
-
         <div class="info">
             <p class="txt-1">Gracias por visitarnos</p>
-            <h2>Bienvenidos a MercaSuper</h2>
+            <h2>BIENVENIDOS A MERCASUPER</h2>
         </div>
 
         <form class="form" th:action="@{/login}" method="POST">
             <h2>Inicio de sesión</h2>
-            <img th:src="@{/img/logo.png}" alt="Logo" height="80">
+            <img th:src="@{/img/logo.png}" alt="Logo MercaSuper" height="90">
             <p>Entra y disfruta de nuestra gran variedad de productos</p>
 
-            <div class="mensajes" style="width: 100%; text-align: center;">
-                
+            <div class="mensajes">
                 <p th:if="${param.error}" 
-                   style="color: #a03333; background: #f8d7da; padding: 8px; border-radius: 5px; font-size: 14px; border: 1px solid #f5c6cb;">
+                   style="color: #a03333; background: #f8d7da; padding: 8px; border-radius: 5px; font-size: 13px; border: 1px solid #f5c6cb;">
                     Correo o contraseña incorrectos.
                 </p>
 
                 <p th:if="${param.registrado}" 
-                   style="color: #155724; background: #d4edda; padding: 8px; border-radius: 5px; font-size: 14px; border: 1px solid #c3e6cb;">
-                    ¡Cuenta creada! Ya puedes iniciar sesión.
-                </p>
-
-                <p th:if="${error}" th:text="${error}" 
-                   style="color: #a03333; font-weight: bold; margin-top: 10px;">
+                   style="color: #155724; background: #d4edda; padding: 8px; border-radius: 5px; font-size: 13px; border: 1px solid #c3e6cb;">
+                    ¡Cuenta creada! Ya puedes entrar.
                 </p>
             </div>
 
-            <input id="correo" type="email" name="email" placeholder="Correo" required>
+            <input id="correo" type="email" name="email" placeholder="Correo electrónico" required>
             <input id="password" type="password" name="password" placeholder="Contraseña" required>
             
-            <input type="submit" value="Login">
+            <input type="submit" value="INGRESAR">
 
-            <p><a th:href="@{/registro}">Crear cuenta</a></p>
+            <a th:href="@{/registro}">¿No tienes cuenta? Regístrate aquí</a>
         </form>
-
     </div>
 
 </body>

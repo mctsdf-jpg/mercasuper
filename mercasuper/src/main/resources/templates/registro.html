@@ -2,28 +2,167 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>MercaSuper - Registro</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Cuenta - MercaSuper</title>
+    <link rel="icon" th:href="@{/img/logo.png}">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #e0df88;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            height: 600px;
+            width: 900px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        /* Mantenemos el lado izquierdo igual al login para consistencia */
+        .info {
+            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/img/granos.webp'); 
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            padding: 40px;
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .info h2 {
+            color: #fff;
+            text-transform: uppercase;
+            font-size: 35px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
+        }
+
+        .form {
+            padding: 40px;
+            width: 50%;
+            text-align: center;
+            background-color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form h2 {
+            color: #b32d2d;
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .form p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .form img {
+            margin-bottom: 15px;
+        }
+
+        .form input {
+            width: 85%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 15px;
+            transition: border 0.3s;
+        }
+
+        .form input:focus {
+            border: 1px solid #b32d2d;
+            outline: none;
+        }
+
+        .form input[type="submit"] {
+            width: 65%;
+            background-color: #b32d2d;
+            color: #fff;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .form input[type="submit"]:hover {
+            background-color: #8b2323;
+            transform: scale(1.02);
+        }
+
+        .form a {
+            color: #b32d2d;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+
+        .form a:hover {
+            text-decoration: underline;
+        }
+
+        /* Estilo para mensajes de error */
+        .error-msg {
+            color: #a03333;
+            background: #f8d7da;
+            padding: 8px;
+            border-radius: 5px;
+            font-size: 13px;
+            width: 85%;
+            margin-bottom: 10px;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
 </head>
 <body>
+
     <div class="container">
         <div class="info">
-            <p class="txt-1">Únete a nosotros</p>
-            <h2>MercaSuper</h2>
-            <p class="txt-2">Crea tu cuenta para empezar a gestionar el inventario.</p>
+            <h2>Únete a nuestra comunidad</h2>
+            <p style="color: #ffe600; font-weight: bold; margin-top: 10px;">MercaSuper</p>
         </div>
 
-        <form class="form" th:action="@{/registrar}" method="post">
+        <form class="form" th:action="@{/registrar}" method="POST">
+            <img th:src="@{/img/logo.png}" alt="Logo MercaSuper" height="70">
             <h2>Crear Cuenta</h2>
-            <img th:src="@{/img/logo.png}" alt="Logo" height="80">
-            
+            <p>Gestiona tu inventario con nosotros</p>
+
+            <div th:if="${param.error}" class="error-msg">
+                Ocurrió un error al registrar. Intenta de nuevo.
+            </div>
+
             <input type="text" name="nombre" placeholder="Nombre completo" required>
             <input type="email" name="correo" placeholder="Correo electrónico" required>
             <input type="password" name="password" placeholder="Contraseña segura" required>
             
-            <input type="submit" value="Registrarse" class="submit">
-            <p><a th:href="@{/}">¿Ya tienes cuenta? Inicia sesión</a></p>
+            <input type="submit" value="REGISTRARSE">
+
+            <a th:href="@{/}">¿Ya tienes cuenta? Inicia sesión</a>
         </form>
     </div>
+
 </body>
 </html>
